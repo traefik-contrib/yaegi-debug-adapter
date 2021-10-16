@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/traefik/yaegi/interp"
-	"gitlab.com/ethan.reesor/vscode-notebooks/yaegi-dap/internal/dap"
+	"github.com/traefik-contrib/yaegi-debug-adapter/internal/dap"
 )
 
 //nolint:deadcode,varcheck

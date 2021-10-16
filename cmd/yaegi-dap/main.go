@@ -19,9 +19,9 @@ import (
 	"github.com/traefik/yaegi/stdlib/syscall"
 	"github.com/traefik/yaegi/stdlib/unrestricted"
 	"github.com/traefik/yaegi/stdlib/unsafe"
-	dbg "gitlab.com/ethan.reesor/vscode-notebooks/yaegi-dap"
-	"gitlab.com/ethan.reesor/vscode-notebooks/yaegi-dap/internal/dap"
-	"gitlab.com/ethan.reesor/vscode-notebooks/yaegi-dap/internal/iox"
+	dbg "github.com/traefik-contrib/yaegi-debug-adapter"
+	"github.com/traefik-contrib/yaegi-debug-adapter/internal/dap"
+	"github.com/traefik-contrib/yaegi-debug-adapter/internal/iox"
 )
 
 func main() {

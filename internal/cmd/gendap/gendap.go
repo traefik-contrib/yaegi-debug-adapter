@@ -15,7 +15,7 @@ import (
 	"sort"
 	"strings"
 
-	"gitlab.com/ethan.reesor/vscode-notebooks/yaegi-dap/internal/jsonx"
+	"github.com/traefik-contrib/yaegi-debug-adapter/internal/jsonx"
 )
 
 var (

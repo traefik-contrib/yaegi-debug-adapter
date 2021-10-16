@@ -16,7 +16,7 @@ import (
 	"strings"
 	"unicode"
 
-	"gitlab.com/ethan.reesor/vscode-notebooks/yaegi-dap/internal/jsonx"
+	"github.com/traefik-contrib/yaegi-debug-adapter/internal/jsonx"
 )
 
 func fatalf(format string, args ...interface{}) {
