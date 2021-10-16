@@ -14,16 +14,17 @@ import (
 	"strconv"
 	"strings"
 
+	dbg "github.com/traefik-contrib/yaegi-debug-adapter"
+	"github.com/traefik-contrib/yaegi-debug-adapter/internal/dap"
+	"github.com/traefik-contrib/yaegi-debug-adapter/internal/iox"
 	"github.com/traefik/yaegi/interp"
 	"github.com/traefik/yaegi/stdlib"
 	"github.com/traefik/yaegi/stdlib/syscall"
 	"github.com/traefik/yaegi/stdlib/unrestricted"
 	"github.com/traefik/yaegi/stdlib/unsafe"
-	dbg "github.com/traefik-contrib/yaegi-debug-adapter"
-	"github.com/traefik-contrib/yaegi-debug-adapter/internal/dap"
-	"github.com/traefik-contrib/yaegi-debug-adapter/internal/iox"
 )
 
+//nolint:gocyclo // TODO must be fixed
 func main() {
 	var (
 		mode          string
@@ -128,6 +129,7 @@ func main() {
 	if asString {
 		b, err := ioutil.ReadFile(args[0])
 		if err != nil {
+			//nolint:gocritic // TODO must be fixed
 			log.Fatal(err)
 		}
 
@@ -153,13 +155,13 @@ func main() {
 		var addr string
 		if u.Scheme == "unix" {
 			addr = u.Path
-			if _, err := os.Stat(addr); err == nil {
+			if _, err = os.Stat(addr); err == nil {
 				// Remove any pre-existing connection
-				os.Remove(addr)
+				_ = os.Remove(addr)
 			}
 
 			// Remove when done
-			defer os.Remove(addr)
+			defer func() { _ = os.Remove(addr) }()
 		} else {
 			addr = u.Host
 		}
@@ -182,7 +184,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("log: %v", err)
 		}
-		defer f.Close()
+		defer func() { _ = f.Close() }()
 		lf = f
 	}
 
@@ -191,7 +193,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer c.Close()
+		defer func() { _ = c.Close() }()
 
 		s.Debug(lf)
 		err = s.Run()
@@ -206,6 +208,8 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		//nolint:errcheck,staticcheck // TODO must be fixed
 		defer c.Close()
 
 		lf, addr := lf, c.RemoteAddr()

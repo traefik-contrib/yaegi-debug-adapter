@@ -5,11 +5,11 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/traefik/yaegi/interp"
 	"github.com/traefik-contrib/yaegi-debug-adapter/internal/dap"
+	"github.com/traefik/yaegi/interp"
 )
 
-//nolint:deadcode,varcheck
+//nolint:deadcode,varcheck // references
 const (
 	rBool          = reflect.Bool
 	rInt           = reflect.Int

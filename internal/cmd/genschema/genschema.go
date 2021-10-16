@@ -19,8 +19,8 @@ import (
 	"github.com/traefik-contrib/yaegi-debug-adapter/internal/jsonx"
 )
 
-func fatalf(format string, args ...interface{}) {
-	fmt.Fprintf(os.Stderr, format, args...)
+func fatalf(frmt string, args ...interface{}) {
+	_, _ = fmt.Fprintf(os.Stderr, frmt, args...)
 	os.Exit(1)
 }
 
@@ -55,7 +55,7 @@ func main() {
 		fatalf("--path is required")
 	}
 
-	resp, err := http.Get(*schemaURL) //nolint:bodyclose,noctx // It is closed; context is not relevant
+	resp, err := http.Get(*schemaURL)
 	if err != nil {
 		fatalf("http: %v\n", err)
 	}
@@ -175,11 +175,11 @@ func resolveRef(s *jsonx.Schema, ref string) (string, *jsonx.Schema) {
 	const schemaDefs = "#/definitions/"
 	if strings.HasPrefix(ref, schemaDefs) {
 		name := ref[len(schemaDefs):]
-		s, ok := s.Definitions[name]
+		def, ok := s.Definitions[name]
 		if !ok {
 			fatalf("missing definition for %q\n", name)
 		}
-		return name, s
+		return name, def
 	}
 
 	fatalf("unsupported ref %q\n", ref)
@@ -203,7 +203,7 @@ func unsupported(name string, s *jsonx.Schema) {
 	fmt.Fprintf(os.Stderr, "type %q: unsupported schema\n", name)
 	enc := json.NewEncoder(os.Stderr)
 	enc.SetIndent("", "    ")
-	enc.Encode(s) //nolint:errcheck
+	_ = enc.Encode(s)
 	os.Exit(1)
 }
 
@@ -222,11 +222,11 @@ func schemaMerge(opts mergeOpts, name string, s, r *jsonx.Schema) {
 	}
 
 	if opts.Recurse && r.AllOf != nil {
-		s := new(jsonx.Schema)
+		sch := new(jsonx.Schema)
 		for i, r := range r.AllOf {
-			schemaMerge(opts, fmt.Sprintf("%s[%d]", name, i), s, r)
+			schemaMerge(opts, fmt.Sprintf("%s[%d]", name, i), sch, r)
 		}
-		r = s
+		r = sch
 	}
 
 	if s.Description == "" {

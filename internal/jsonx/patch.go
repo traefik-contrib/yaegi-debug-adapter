@@ -15,31 +15,31 @@ import (
 func ApplyPatch(target []byte, patchPath string) ([]byte, error) {
 	f, err := os.Open(patchPath)
 	if err != nil {
-		return nil, fmt.Errorf("read (patch): %v", err)
+		return nil, fmt.Errorf("read (patch): %w", err)
 	}
 
 	var p Patch
 	err = json.NewDecoder(f).Decode(&p)
 	if err != nil {
-		return nil, fmt.Errorf("json (patch): %v", err)
+		return nil, fmt.Errorf("json (patch): %w", err)
 	}
 
 	var v interface{}
 	err = json.Unmarshal(target, &v)
 	if err != nil {
-		return nil, fmt.Errorf("json (target): %v", err)
+		return nil, fmt.Errorf("json (target): %w", err)
 	}
 
 	for i, p := range p {
 		err = p.Apply(&v)
 		if err != nil {
-			return nil, fmt.Errorf("patch [%d]: %v", i, err)
+			return nil, fmt.Errorf("patch [%d]: %w", i, err)
 		}
 	}
 
 	target, err = json.Marshal(v)
 	if err != nil {
-		return nil, fmt.Errorf("json (marshal): %v", err)
+		return nil, fmt.Errorf("json (marshal): %w", err)
 	}
 
 	return target, nil
@@ -106,7 +106,8 @@ type Patch []PatchOp
 
 // Apply applies the patch. Apply returns ErrNotFound if From or Path are
 // required and refer to a value that does not exist in v.
-func (op *PatchOp) Apply(v *interface{}) error {
+//nolint:gocyclo // TODO must be fixed
+func (op *PatchOp) Apply(v *interface{}) error { //nolint:gocritic // TODO must be fixed
 	path, err := op.Path.Parse()
 	if err != nil {
 		return fmt.Errorf("path: %w", err)

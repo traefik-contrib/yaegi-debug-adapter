@@ -14,14 +14,13 @@ var ErrStop = errors.New("stop")
 
 // Handler handles DAP events.
 type Handler interface {
-	// Called when the DAP session begins.
+	// Initialize Called when the DAP session begins.
 	Initialize(*Session, *InitializeRequestArguments) (*Capabilities, error)
 
-	// Called for each received DAP message. Returning an error will terminate
-	// the session.
+	// Process Called for each received DAP message. Returning an error will terminate the session.
 	Process(IProtocolMessage) error
 
-	// Called when the DAP session ends.
+	// Terminate Called when the DAP session ends.
 	Terminate()
 }
 
@@ -35,9 +34,9 @@ type Session struct {
 	smu     *sync.Mutex
 }
 
-// NewSession returns a new Session. The session reads messages from the reader
-// and writes messages to the writer. The caller is responsible for closing the
-// reader and writer.
+// NewSession returns a new Session.
+// The session reads messages from the reader and writes messages to the writer.
+// The caller is responsible for closing the reader and writer.
 func NewSession(r io.Reader, w io.Writer, handler Handler) *Session {
 	return &Session{
 		handler: handler,
@@ -47,8 +46,8 @@ func NewSession(r io.Reader, w io.Writer, handler Handler) *Session {
 	}
 }
 
-// Debug sets the debug writer. If the debug writer is non-null, sent and
-// received DAP messages will be written to it.
+// Debug sets the debug writer.
+// If the debug writer is non-null, sent and received DAP messages will be written to it.
 func (s *Session) Debug(w io.Writer) { s.dbg = w }
 
 func (s *Session) debug(dir string, msg IProtocolMessage) {
@@ -58,9 +57,9 @@ func (s *Session) debug(dir string, msg IProtocolMessage) {
 
 	b, err := json.Marshal(msg)
 	if err == nil {
-		fmt.Fprintf(s.dbg, "%s %s\n", dir, b)
+		_, _ = fmt.Fprintf(s.dbg, "%s %s\n", dir, b)
 	} else {
-		fmt.Fprintf(s.dbg, "%s !%v\n", dir, err)
+		_, _ = fmt.Fprintf(s.dbg, "%s !%v\n", dir, err)
 	}
 }
 
@@ -72,7 +71,7 @@ func (s *Session) recv() (IProtocolMessage, error) {
 	}
 
 	if s.dbg != nil {
-		fmt.Fprintf(s.dbg, "> !%v\n", err)
+		_, _ = fmt.Fprintf(s.dbg, "> !%v\n", err)
 	}
 	return nil, err
 }
@@ -91,8 +90,9 @@ func (s *Session) send(msg IProtocolMessage) error {
 	}
 
 	if s.dbg != nil {
-		fmt.Fprintf(s.dbg, "< !%v\n", err)
+		_, _ = fmt.Fprintf(s.dbg, "< !%v\n", err)
 	}
+
 	return err
 }
 
@@ -112,6 +112,7 @@ func (s *Session) Respond(req *Request, success bool, message string, body Respo
 	resp.Success = success
 	resp.Message = Str(message)
 	resp.Body = body
+
 	return s.send(resp)
 }
 

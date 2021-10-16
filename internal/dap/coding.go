@@ -34,7 +34,7 @@ func NewEncoder(w io.Writer) *Encoder {
 // arguments/body of a request, response, or event does not match its
 // command/event field.
 func (c *Encoder) Encode(msg IProtocolMessage) error {
-	json, err := json.Marshal(msg)
+	data, err := json.Marshal(msg)
 	if err != nil {
 		return err
 	}
@@ -42,9 +42,9 @@ func (c *Encoder) Encode(msg IProtocolMessage) error {
 	// Write to a buffer so the final write is atomic, as long as the underling
 	// writer is atomic
 	buf := new(bytes.Buffer)
-	fmt.Fprintf(buf, "Content-Length: %d\r\n", len(json))
-	fmt.Fprintf(buf, "\r\n")
-	buf.Write(json)
+	_, _ = fmt.Fprintf(buf, "Content-Length: %d\r\n", len(data))
+	_, _ = fmt.Fprintf(buf, "\r\n")
+	buf.Write(data)
 
 	_, err = buf.WriteTo(c.w)
 	return err
@@ -308,6 +308,6 @@ func (m *Event) UnmarshalJSON(b []byte) error {
 }
 
 type (
-	ConfigurationDoneArguments struct{} //nolint:revive
-	LoadedSourcesArguments     struct{} //nolint:revive
+	ConfigurationDoneArguments struct{}
+	LoadedSourcesArguments     struct{}
 )

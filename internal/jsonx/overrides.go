@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 )
 
+// Schema_Type Schema type.
+//nolint:revive,stylecheck // references
 type Schema_Type []SimpleTypes
 
 func (t *Schema_Type) UnmarshalJSON(b []byte) error {
