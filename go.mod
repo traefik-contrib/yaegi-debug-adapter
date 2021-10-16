@@ -1,4 +1,4 @@
-module gitlab.com/ethan.reesor/vscode-notebooks/yaegi-dap
+module github.com/traefik-contrib/yaegi-debug-adapter
 
 go 1.16
 

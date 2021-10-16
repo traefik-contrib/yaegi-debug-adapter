@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 
 	"github.com/traefik/yaegi/interp"
-	"gitlab.com/ethan.reesor/vscode-notebooks/yaegi-dap/internal/dap"
-	"gitlab.com/ethan.reesor/vscode-notebooks/yaegi-dap/internal/iox"
+	"github.com/traefik-contrib/yaegi-debug-adapter/internal/dap"
+	"github.com/traefik-contrib/yaegi-debug-adapter/internal/iox"
 )
 
 // Options for Adapter.
