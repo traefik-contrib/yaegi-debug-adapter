@@ -15,8 +15,8 @@ import (
 	"strings"
 
 	dbg "github.com/traefik-contrib/yaegi-debug-adapter"
-	"github.com/traefik-contrib/yaegi-debug-adapter/internal/dap"
 	"github.com/traefik-contrib/yaegi-debug-adapter/internal/iox"
+	"github.com/traefik-contrib/yaegi-debug-adapter/pkg/dap"
 	"github.com/traefik/yaegi/interp"
 	"github.com/traefik/yaegi/stdlib"
 	"github.com/traefik/yaegi/stdlib/syscall"
