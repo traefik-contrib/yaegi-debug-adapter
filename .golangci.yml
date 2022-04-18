@@ -89,6 +89,9 @@ issues:
     - path: internal/
       linters:
         - noctx
+    - path: pkg/
+      linters:
+        - noctx
     - path: cmd/
       linters:
         - forbidigo

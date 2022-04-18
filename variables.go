@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/traefik-contrib/yaegi-debug-adapter/internal/dap"
+	"github.com/traefik-contrib/yaegi-debug-adapter/pkg/dap"
 	"github.com/traefik/yaegi/interp"
 )
 
