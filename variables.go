@@ -83,7 +83,7 @@ func (r *variables) Get(i int) (variableScope, bool) {
 func (a *Adapter) newVar(name string, rv reflect.Value) *dap.Variable {
 	v := new(dap.Variable)
 	v.Name = name
-	v.Type = dap.Str(fmt.Sprint(rv.Type()))
+	v.Type = dap.Str(rv.Type().String())
 
 	k := rv.Kind()
 	if canBeNil(k) && rv.IsNil() {
@@ -93,9 +93,9 @@ func (a *Adapter) newVar(name string, rv reflect.Value) *dap.Variable {
 
 	switch rv.Kind() {
 	case rChan, rFunc, rInterface, rMap, rPtr, rSlice, rArray, rStruct:
-		v.Value = fmt.Sprint(rv.Type())
+		v.Value = rv.Type().String()
 	default:
-		v.Value = fmt.Sprint(rv)
+		v.Value = rv.String()
 	}
 
 	switch rv.Kind() {
@@ -180,7 +180,7 @@ func (v *mapVars) Variables(a *Adapter) []*dap.Variable {
 	keys := v.MapKeys()
 	vars := make([]*dap.Variable, len(keys))
 	for i, k := range keys {
-		vars[i] = a.newVar(fmt.Sprint(k), v.MapIndex(k))
+		vars[i] = a.newVar(k.String(), v.MapIndex(k))
 	}
 	return vars
 }

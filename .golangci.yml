@@ -41,6 +41,7 @@ linters-settings:
       - octalLiteral
       - paramTypeCombine # already handle by gofumpt.extra-rules
       - unnamedResult
+      - ioutilDeprecated # compatibility with go1.16
     settings:
       hugeParam:
         sizeThreshold: 110
@@ -74,6 +75,9 @@ linters:
     - gochecknoglobals
     - funlen
     - goconst
+    - varnamelen
+    - errchkjson
+    - ireturn
     - gocognit # TODO must be enable in the future
 
 issues:

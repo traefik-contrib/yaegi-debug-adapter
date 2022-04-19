@@ -137,7 +137,7 @@ func (a *Adapter) Initialize(s *dap.Session, ccaps *dap.InitializeRequestArgumen
 }
 
 // Process implements dap.Handler and should not be called directly.
-//nolint:gocyclo // TODO must be fixed
+//nolint:gocyclo,maintidx // TODO must be fixed
 func (a *Adapter) Process(pm dap.IProtocolMessage) error {
 	m, ok := pm.(*dap.Request)
 	if !ok {

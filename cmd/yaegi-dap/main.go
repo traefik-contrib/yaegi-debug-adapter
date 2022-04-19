@@ -24,7 +24,7 @@ import (
 	"github.com/traefik/yaegi/stdlib/unsafe"
 )
 
-//nolint:gocyclo // TODO must be fixed
+//nolint:gocyclo,maintidx // TODO must be fixed
 func main() {
 	var (
 		mode          string
@@ -209,7 +209,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		//nolint:errcheck,staticcheck // TODO must be fixed
+		//nolint:errcheck,staticcheck,gocritic // TODO must be fixed
 		defer c.Close()
 
 		lf, addr := lf, c.RemoteAddr()
